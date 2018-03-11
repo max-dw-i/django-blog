@@ -1,0 +1,23 @@
+{% extends 'blog_app/base.html' %}
+{% load humanize %}
+
+{% block content %}
+{% for post in posts %}
+<div class="post">
+    <div class="title">
+        <a href="{% url 'post' post.pk %}">{{ post.title }}</a>
+    </div>
+    <div class="publ_date">
+        <p>{{ post.publ_date|naturaltime}}</p>
+    </div>
+    {{ post.before_spoiler }}
+</div>
+{% empty %}
+<div class="post">
+    <p>
+        <strong>There is no publication</strong>
+    </p>
+</div>
+{% endfor %}
+{% include 'blog_app/pagination.html' %}
+{% endblock %}

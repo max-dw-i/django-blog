@@ -1,0 +1,19 @@
+{% extends 'blog_app/base.html' %}
+
+{% block content %}
+<div class="post-like-wrapper">
+    <p>If you want to contact me, you can use:</p>
+    <ul>
+        <li>My telephone: 1-1111-666-66-66;</li>
+        <li>My mail: anonymous@nsa.com</li>
+        <li>My icq: 111666</li>
+        <li>My address: Springwood, Ohio, Elm street, 1428</li>
+    </ul>
+    <p>Or you can use the form below to send me an email:</p>
+    <form method="post" id="send-email-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Send</button>
+    </form>
+</div>
+{% endblock %}

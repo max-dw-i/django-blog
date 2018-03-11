@@ -1,0 +1,37 @@
+{% extends 'blog_app/base.html' %}
+{% load humanize %}
+
+{% block content %}
+<div class="post">
+    <div class="title">
+        {{ post.title }}
+    </div>
+    <div class="publ_date">
+        <p>{{ post.publ_date }}</p>
+    </div>
+    <p>{{ post.post_text }}</p>
+</div>
+
+<h2 style="margin-left: 70px">Comments</h2>
+{% for comment in comments %}
+<div class="comment">
+    <p>@{{ comment.user }}</p>
+    <div class="publ_date">
+        <p>{{ comment.publ_date|naturaltime }}</p>
+    </div>
+    <p>{{ comment.comment_text }}</p>
+</div>
+{% empty %}
+<p style="margin-left: 60px">There is no comment</p>
+{% endfor %}
+{% if user.is_authenticated %}
+<form method="post" id="comment-form">
+    <!-- To protect from CSRF attacks, use csrf_token in any <form>
+    tag which is internal for our site; if you want to use a form
+    for sending data to an external site, DO NOT use csrf_token-->
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Post</button>
+</form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,87 @@
+{% load static %} {% load humanize %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Anonymous blog</title>
+    <!-- load css -->
+    <link rel="stylesheet" href="{% static 'blog_app/css/blog_app.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <div id="top-text">
+                <a href="{% url 'home' %}"><h1>Anonymous blog</h1></a>
+                <p>A blog about everything and about nothing</p>
+            </div>
+            <div id="auth">
+                {% if user.is_authenticated %}
+                <div class="ref-auth">
+                    <a href="{% url 'settings' %}">
+                        {{ user.username }}
+                    </a>
+                </div>
+                <div class="ref-auth">
+                    <a href="{% url 'logout' %}">
+                        Log out
+                    </a>
+                </div>
+                {% else %}
+                <div class="ref-auth">
+                    <a href="{% url 'login' %}?next={{ request.path }}">
+                        Log In
+                    </a>
+                </div>
+                <div class="ref-auth">
+                    <a href="{% url 'signup' %}">
+                        Sign Up
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div id="center">
+            <div id="left">
+                <div id="left-nav">
+                    <a href="{% url 'search' %}"><p><strong>Search</strong></p></a>
+                    <p>Recently added publications:</p>
+                    <ul>
+                        {% for post in recent_posts %}
+                        <li>
+                            <a href="{% url 'post' post.pk %}">{{ post.title }}</a>
+                            <div class="publ_date">
+                                {{ post.publ_date|naturaltime }}
+                            </div>
+                        </li>
+                        {% empty %}
+                        <p>
+                            <strong>There is no publication</strong>
+                        </p>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div id="author">
+                    <img src="{% static 'blog_app/images/avatar.jpg' %}">
+                    <div id="author-refs">
+                        <a href="{% url 'contact' %}"><p><strong>Contact</strong></p></a>
+                        <a href="{% url 'about' %}"><p><strong>About</strong></p></a>
+                    </div>
+                    <div id="author_info">
+                        <p>Anonymous and Django's LOVER!!! <3</p>
+                    </div>
+                </div>
+            </div>
+            <div id="content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+        <div id="footer">
+            <p>(c) 2018. Anonymous. No Any License</p>
+        </div>
+    </div>
+</body>
+
+</html>

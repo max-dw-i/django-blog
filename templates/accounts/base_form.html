@@ -1,0 +1,18 @@
+{% extends 'accounts/base.html' %}
+
+{% block content %}
+<h1>
+    {% block title %}
+    {% endblock %}
+</h1>
+<form method="post">
+    {% block help_text %}{% endblock %}
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">{% block button_name %}{% endblock %}</button>
+    <div id="pwd-reset">
+        {% block pwdreset %}
+        {% endblock %}
+    </div>
+</form>
+{% endblock %}
