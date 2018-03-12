@@ -75,11 +75,21 @@ ul {
     background-color: #9BB5B7;
 }
 
-
+/*
 #author img{
     float: left;
     border-radius: 70px;
     margin: 5px;
+}
+*/
+
+#author-photo {
+    float: left;
+    border-radius: 70px;
+    background-color: white;
+    margin: 5px;
+    height: 125px;
+    width: 125px;
 }
 
 #author-refs {
