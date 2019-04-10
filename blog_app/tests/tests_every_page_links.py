@@ -60,19 +60,18 @@ class AnonymousUserLinksTests(TestCase):
     template, we can check any page
     """
     def setUp(self):
-        about_url = reverse('about')
-        self.response = self.client.get(about_url)
+        self.about_url = reverse('about')
+        self.response = self.client.get(self.about_url)
 
     def test_every_page_contains_login_link(self):
         """Tests if every page contains the login link"""
-        about_url = reverse('about')
         url_login = reverse('login')
-        self.assertContains(self.response, 'href="{}?next={}"'.format(url_login, about_url))
+        self.assertContains(self.response, 'href="{}?next={}"'.format(url_login, self.about_url))
 
     def test_every_page_contains_signup_link(self):
         """Tests if every page contains the signup link"""
         signup_url = reverse('signup')
-        self.assertContains(self.response, 'href="{}"'.format(signup_url))
+        self.assertContains(self.response, 'href="{}?next={}"'.format(signup_url, self.about_url))
 
 
 class AuthenticatedUserLinksTests(TestCase):

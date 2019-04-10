@@ -36,7 +36,7 @@
                     </a>
                 </div>
                 <div class="ref-auth">
-                    <a href="{% url 'signup' %}">
+                    <a href="{% url 'signup' %}?next={{ request.path }}">
                         Sign Up
                     </a>
                 </div>

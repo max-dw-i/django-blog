@@ -59,10 +59,26 @@ class SuccessfulSignUpTests(TestCase):
         self.signup_response = self.client.post(signup_url, data)
         self.page_url = reverse('page', kwargs={'page': 1})
 
-    def test_redirection(self):
+    def test_redirection_without_parameter_next(self):
         """Tests the redirect after signing up to /page/1/
         """
         self.assertRedirects(self.signup_response, self.page_url)
+
+    def test_redirection_with_parameter_next(self):
+        """Tests the redirect after signing up to a page from
+        'next' parameter
+        """
+        next_param = '?next={}'.format(reverse('about'))
+        signup_url = reverse('signup') + next_param
+        data = {
+            'username': 'Vasyan1',
+            'email': 'vasyan1@vasyan.com',
+            'password1': '1234567v',
+            'password2': '1234567v'
+        }
+        signup_response = self.client.post(signup_url, data)
+        page_url = reverse('about')
+        self.assertRedirects(signup_response, page_url)
 
     def test_user_creation(self):
         """Tests if the user has been created"""

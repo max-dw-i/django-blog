@@ -1,4 +1,5 @@
-from django.contrib.auth import login, views as auth_views
+from django.contrib.auth import login
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
@@ -17,6 +18,7 @@ class SignUpView(FormView):
     success_url = reverse_lazy('page', kwargs={'page': 1})
 
     def form_valid(self, form):
+        self.success_url = self.request.GET.get('next', SignUpView.success_url)
         user = form.save()
         login(self.request, user)
         return super().form_valid(form)
