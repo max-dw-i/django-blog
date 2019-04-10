@@ -3,16 +3,19 @@
 {% block content %}
 <h1>
     {% block title %}
-    {% endblock %}
+    {% endblock title %}
 </h1>
 <form method="post">
-    {% block help_text %}{% endblock %}
+    {% block help_text %}{% endblock help_text %}
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn">{% block button_name %}{% endblock %}</button>
+    <button type="submit" class="btn">
+        {% block button_name %}
+        {% endblock button_name %}
+    </button>
     <div id="pwd-reset">
         {% block pwdreset %}
-        {% endblock %}
+        {% endblock pwdreset %}
     </div>
 </form>
-{% endblock %}
+{% endblock content %}

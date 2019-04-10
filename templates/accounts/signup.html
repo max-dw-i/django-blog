@@ -1,7 +1,7 @@
 {% extends 'accounts/base_form.html' %}
 
-{% block title %}Sign Up{% endblock %}
-{% block button_name %}Sign Up{% endblock %}
+{% block title %}Sign Up{% endblock title %}
+{% block button_name %}Sign Up{% endblock button_name %}
 {% block pwdreset %}
 <a href="{% url 'password_reset' %}">Forget your password?</a>
-{% endblock %}
+{% endblock pwdreset %}

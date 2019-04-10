@@ -1,7 +1,7 @@
 {% extends 'accounts/base_form.html' %}
 
-{% block title %}Account settings{% endblock %}
-{% block button_name %}Save changes{% endblock %}
+{% block title %}Account settings{% endblock title %}
+{% block button_name %}Save changes{% endblock button_name %}
 {% block pwdreset %}
 <a href="{% url 'password_change' %}">Do you want to change you password?</a>
-{% endblock %}
+{% endblock pwdreset %}
