@@ -1,4 +1,4 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
@@ -34,3 +34,39 @@ class UserUpdateView(UpdateView):
     def get_object(self):
         # Get the object we are going to update
         return self.request.user
+
+
+class MyLoginView(auth_views.LoginView):
+    template_name = 'accounts/login.html'
+
+
+class MyLogoutView(auth_views.LogoutView):
+    # Logout is implemented in Django so you need to write a logout
+    # path and in settings.py assign 'LOGOUT_REDIRECT_URL = 'home''
+    next_page='/page/1/'
+
+
+class MyPasswordResetView(auth_views.PasswordResetView):
+    template_name = 'accounts/password_reset.html'
+    email_template_name = 'accounts/password_reset_email.html'
+    subject_template_name = 'accounts/password_reset_subject.txt'
+
+
+class MyPasswordResetDoneView(auth_views.PasswordResetDoneView):
+    template_name = 'accounts/password_reset_done.html'
+
+
+class MyPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    template_name = 'accounts/password_reset_confirm.html'
+
+
+class MyPasswordResetCompleteView(auth_views.PasswordResetCompleteView):
+    template_name = 'accounts/password_reset_complete.html'
+
+
+class MyPasswordChangeView(auth_views.PasswordChangeView):
+    template_name = 'accounts/password_change.html'
+
+
+class MyPasswordChangeDoneView(auth_views.PasswordChangeDoneView):
+    template_name = 'accounts/password_change_done.html'
