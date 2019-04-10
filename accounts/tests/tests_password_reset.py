@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user, views
+from django.contrib.auth import get_user
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
@@ -7,6 +7,8 @@ from django.test import TestCase
 from django.urls import resolve, reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+
+from .. import views
 
 
 class PasswordResetPageFormTests(TestCase):
@@ -33,7 +35,7 @@ class PasswordResetPageFormTests(TestCase):
     def test_url_resolves_correct_view(self):
         """Tests if the pwd reset link maps PasswordResetView"""
         view = resolve('/accounts/reset/')
-        self.assertEqual(view.func.view_class, views.PasswordResetView)
+        self.assertEqual(view.func.view_class, views.MyPasswordResetView)
 
     def test_csrf(self):
         """Tests if we get a csrf token"""
@@ -99,7 +101,7 @@ class PasswordResetDoneTests(TestCase):
     def test_url_resolves_correct_view(self):
         """Tests if the pwd reset done link maps PasswordResetDoneView"""
         view = resolve('/accounts/reset/done/')
-        self.assertEqual(view.func.view_class, views.PasswordResetDoneView)
+        self.assertEqual(view.func.view_class, views.MyPasswordResetDoneView)
 
 
 class PasswordResetConfirmPageFormTests(TestCase):
@@ -126,7 +128,7 @@ class PasswordResetConfirmPageFormTests(TestCase):
     def test_url_resolves_correct_view(self):
         """Tests if the pwd reset done link maps PasswordResetConfirmView"""
         view = resolve('/accounts/reset/{uidb64}/{token}/'.format(uidb64=self.uid, token=self.token))
-        self.assertEqual(view.func.view_class, views.PasswordResetConfirmView)
+        self.assertEqual(view.func.view_class, views.MyPasswordResetConfirmView)
 
     def test_csrf(self):
         """Tests if we get a csrf token"""
@@ -191,4 +193,4 @@ class PasswordResetCompleteTests(TestCase):
     def test_url_resolves_correct_view(self):
         """Tests if the pwd reset done link maps PasswordResetCompleteView"""
         view = resolve('/accounts/reset/complete/')
-        self.assertEqual(view.func.view_class, views.PasswordResetCompleteView)
+        self.assertEqual(view.func.view_class, views.MyPasswordResetCompleteView)

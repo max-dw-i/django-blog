@@ -1,9 +1,10 @@
-from django.contrib.auth import views as auth_views
 from django.contrib.auth import get_user
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import resolve, reverse
+
+from .. import views
 
 
 class PasswordChangePageFormTests(TestCase):
@@ -26,7 +27,7 @@ class PasswordChangePageFormTests(TestCase):
     def test_url_resolves_correct_view(self):
         """Tests if the pwd change link maps PasswordChangeView"""
         view = resolve('/accounts/settings/password/')
-        self.assertEqual(view.func.view_class, auth_views.PasswordChangeView)
+        self.assertEqual(view.func.view_class, views.MyPasswordChangeView)
 
     def test_csrf(self):
         """Tests if we get a csrf token"""

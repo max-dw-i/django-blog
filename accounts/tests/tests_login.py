@@ -1,8 +1,10 @@
-from django.contrib.auth import get_user, views
+from django.contrib.auth import get_user
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import resolve, reverse
+
+from .. import views
 
 
 class LogInTest(TestCase):
@@ -17,7 +19,7 @@ class LogInTest(TestCase):
     def test_url_resolves_correct_view(self):
         """Tests if the login link maps LoginView"""
         view = resolve('/accounts/login/')
-        self.assertEqual(view.func.view_class, views.LoginView)
+        self.assertEqual(view.func.view_class, views.MyLoginView)
 
     def test_contains_form(self):
         """Tests if the page contains the login form"""

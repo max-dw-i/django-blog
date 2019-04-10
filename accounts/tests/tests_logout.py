@@ -1,7 +1,9 @@
-from django.contrib.auth import get_user, views
+from django.contrib.auth import get_user
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import resolve, reverse
+
+from .. import views
 
 
 class LogOutTest(TestCase):
@@ -17,7 +19,7 @@ class LogOutTest(TestCase):
     def test_logout_view(self):
         """Tests if the logout link maps LogoutView"""
         view = resolve('/accounts/logout/')
-        self.assertEqual(view.func.view_class, views.LogoutView)
+        self.assertEqual(view.func.view_class, views.MyLogoutView)
 
     def test_after_logout_redirect_home(self):
         """Tests the redirection after logging out"""
