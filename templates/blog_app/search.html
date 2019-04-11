@@ -2,10 +2,11 @@
 
 {% block content %}
 <div class="post-like-wrapper">
-    <form id="search-form" method="post">
+    <!--Don't add/update/delete any data so don't need POST method-->
+    <form id="search-form" method="GET">
         {% csrf_token %}
         {{ form.as_p }}
         <button class="btn" type="submit">Go</button>
     </form>
 </div>
-{% endblock %}
+{% endblock content %}
