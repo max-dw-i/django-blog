@@ -39,36 +39,53 @@ class UserUpdateView(UpdateView):
 
 
 class MyLoginView(auth_views.LoginView):
+    """Login view"""
+
     template_name = 'accounts/login.html'
 
 
 class MyLogoutView(auth_views.LogoutView):
+    """Logout view"""
     # Logout is implemented in Django so you need to write a logout
     # path and in settings.py assign 'LOGOUT_REDIRECT_URL = 'home''
-    next_page='/page/1/'
+    next_page = reverse_lazy('page', kwargs={'page': 1})
 
 
 class MyPasswordResetView(auth_views.PasswordResetView):
+    """View rendering the form to fill in email
+    to get the link to the password resetting form
+    """
+
     template_name = 'accounts/password_reset.html'
     email_template_name = 'accounts/password_reset_email.html'
     subject_template_name = 'accounts/password_reset_subject.txt'
 
 
 class MyPasswordResetDoneView(auth_views.PasswordResetDoneView):
+    """View saying to check the email"""
+
     template_name = 'accounts/password_reset_done.html'
 
 
 class MyPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    """View rendering the form to set a new password"""
+
     template_name = 'accounts/password_reset_confirm.html'
 
 
 class MyPasswordResetCompleteView(auth_views.PasswordResetCompleteView):
+    """Successful password reset view"""
+
     template_name = 'accounts/password_reset_complete.html'
 
 
 class MyPasswordChangeView(auth_views.PasswordChangeView):
+    """View rendering the form to change the password"""
+
     template_name = 'accounts/password_change.html'
 
 
 class MyPasswordChangeDoneView(auth_views.PasswordChangeDoneView):
+    """Successful password change view"""
+
     template_name = 'accounts/password_change_done.html'
