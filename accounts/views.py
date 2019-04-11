@@ -11,7 +11,6 @@ from .forms import SignUpForm, UserUpdateForm
 
 class SignUpView(FormView):
     """Sign up view"""
-
     form_class = SignUpForm
     template_name = 'accounts/signup.html'
     success_url = reverse_lazy('page', kwargs={'page': 1})
@@ -30,14 +29,13 @@ class UserUpdateView(UpdateView):
     template_name = 'accounts/settings.html'
     success_url = reverse_lazy('settings')
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         # Get the object we are going to update
         return self.request.user
 
 
 class MyLoginView(auth_views.LoginView):
     """Login view"""
-
     template_name = 'accounts/login.html'
 
 
@@ -52,7 +50,6 @@ class MyPasswordResetView(auth_views.PasswordResetView):
     """View rendering the form to fill in email
     to get the link to the password resetting form
     """
-
     template_name = 'accounts/password_reset.html'
     email_template_name = 'accounts/password_reset_email.html'
     subject_template_name = 'accounts/password_reset_subject.txt'
@@ -60,29 +57,24 @@ class MyPasswordResetView(auth_views.PasswordResetView):
 
 class MyPasswordResetDoneView(auth_views.PasswordResetDoneView):
     """View saying to check the email"""
-
     template_name = 'accounts/password_reset_done.html'
 
 
 class MyPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
     """View rendering the form to set a new password"""
-
     template_name = 'accounts/password_reset_confirm.html'
 
 
 class MyPasswordResetCompleteView(auth_views.PasswordResetCompleteView):
     """Successful password reset view"""
-
     template_name = 'accounts/password_reset_complete.html'
 
 
 class MyPasswordChangeView(auth_views.PasswordChangeView):
     """View rendering the form to change the password"""
-
     template_name = 'accounts/password_change.html'
 
 
 class MyPasswordChangeDoneView(auth_views.PasswordChangeDoneView):
     """Successful password change view"""
-
     template_name = 'accounts/password_change_done.html'

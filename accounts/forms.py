@@ -4,8 +4,7 @@ from django.contrib.auth.models import User
 
 
 class SignUpForm(UserCreationForm):
-    """ Sign up form"""
-
+    """Sign up form"""
     email = forms.EmailField()
 
     class Meta:
@@ -15,7 +14,6 @@ class SignUpForm(UserCreationForm):
 
 class UserUpdateForm(forms.ModelForm):
     """User update form"""
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['email'].required = True
