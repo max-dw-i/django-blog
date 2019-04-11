@@ -85,3 +85,25 @@ class SettingsWithInvalidDataTests(SettingsBaseDataTests):
         self.assertEqual(kolyan.first_name, '')
         self.assertEqual(kolyan.last_name, '')
         self.assertEqual(kolyan.email, 'vasyan@vasyan.com')
+
+
+class SettingsEmailFieldRequiredTests(SettingsBaseDataTests):
+    def setUp(self):
+        data = {
+            'first_name': '',
+            'last_name': '',
+            'email': ''
+        }
+        super().setUp(data)
+
+    def test_form_errors(self):
+        """Tests if we get errors after submissioning an invalid form"""
+        form = self.settings_response.context.get('form')
+        self.assertTrue(form.errors)
+
+    def test_user_data_not_changed(self):
+        """Tests the data has not been changed"""
+        kolyan = User.objects.all().filter(pk=1)[0]
+        self.assertEqual(kolyan.first_name, '')
+        self.assertEqual(kolyan.last_name, '')
+        self.assertEqual(kolyan.email, 'vasyan@vasyan.com')
