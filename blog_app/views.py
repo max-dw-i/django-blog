@@ -2,6 +2,7 @@ from functools import reduce
 
 from django.core.mail import send_mail
 from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, ListView
@@ -11,29 +12,24 @@ from .forms import NewCommentForm, SearchForm, SendEmailForm
 from .models import Post
 
 
-class RecentPostsView(ContextMixin):
-    """View for showing recent posts"""
+class RecentPostsContextMixin(ContextMixin):
+    """Mixin for getting context with recent posts"""
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['recent_posts'] = Post.objects.all().order_by('-publ_date')[:5]
         return context
 
 
-class PageView(RecentPostsView, ListView):
-    """View for making main pages with the posts list"""
-    # TODO: We get from db all the post (or not???) every time we go
-    # to another page and just then slice the necessary;
-    # maybe it makes sense to get from db only the posts we need
-
+class PageView(RecentPostsContextMixin, ListView):
+    """View for making main page with the posts list"""
     template_name = 'blog_app/page.html'
     context_object_name = 'posts'
     queryset = Post.objects.all().order_by('-publ_date')
     paginate_by = 2
 
 
-class PostNCommentView(RecentPostsView, CreateView):
+class PostNCommentView(RecentPostsContextMixin, CreateView):
     """View for making separate post pages and posting new comments"""
-
     template_name = 'blog_app/post.html'
     form_class = NewCommentForm
 
@@ -43,7 +39,7 @@ class PostNCommentView(RecentPostsView, CreateView):
     def form_valid(self, form):
         post = get_object_or_404(Post, pk=self.kwargs['pk'])
         comment = form.save(commit=False)
-        # post_id and user in out model are foreignkey fields so we must
+        # post_id and user in our model are foreignkey fields so we must
         # assign to them not primary key values itself but the objects that
         # have this specific primary key
         comment.post_id = post
@@ -60,11 +56,10 @@ class PostNCommentView(RecentPostsView, CreateView):
         return context
 
 
-class ContactView(RecentPostsView, FormView):
+class ContactView(RecentPostsContextMixin, FormView):
     """View for making a contact page and send email to the
     author's blog
     """
-
     template_name = 'blog_app/contact.html'
     form_class = SendEmailForm
     success_url = reverse_lazy('emailsent')
@@ -80,9 +75,8 @@ class ContactView(RecentPostsView, FormView):
         return super().form_valid(form)
 
 
-class SearchView(RecentPostsView, FormView):
+class SearchView(RecentPostsContextMixin, FormView):
     """View for searching posts in the blog"""
-
     template_name = 'blog_app/search.html'
     form_class = SearchForm
 
@@ -96,13 +90,11 @@ class SearchView(RecentPostsView, FormView):
     def form_valid(self, form):
         query = form.cleaned_data['query']
         self.kwargs['query'] = '_'.join(query.split(' ')).lower()
-
         return super().form_valid(form)
 
 
-class SearchResultView(RecentPostsView, ListView):
-    """View for searching results"""
-
+class SearchResultView(RecentPostsContextMixin, ListView):
+    """View for the search results"""
     template_name = 'blog_app/page.html'
     context_object_name = 'posts'
     paginate_by = 10
@@ -118,15 +110,13 @@ class SearchResultView(RecentPostsView, ListView):
         return posts
 
 
-class AboutView(RecentPostsView, TemplateView):
+class AboutView(RecentPostsContextMixin, TemplateView):
     """View for making the about page"""
-
     template_name = 'blog_app/about.html'
 
 
-class EmailSentView(RecentPostsView, TemplateView):
+class EmailSentView(RecentPostsContextMixin, TemplateView):
     """View for making the email send success page"""
-
     template_name = 'blog_app/emailsent.html'
 
 
