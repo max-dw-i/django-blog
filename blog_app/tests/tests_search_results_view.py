@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import resolve, reverse
 
 from ..models import Post
-from ..views import SearchResultView
+from ..views import SearchResultListView
 
 
 class SearchResultBaseDataTests(TestCase):
@@ -51,9 +51,9 @@ class SearchResultFoundTests(SearchResultBaseDataTests):
         self.assertEqual(self.search_response.status_code, 200)
 
     def test_url_resolves_search_result_view(self):
-        """Tests resolving SearchResultView"""
+        """Tests resolving SearchResultListView"""
         view = resolve('/search/vasya/1/')
-        self.assertEqual(view.func.view_class, SearchResultView)
+        self.assertEqual(view.func.view_class, SearchResultListView)
 
     def test_search_results(self):
         """Tests the result of a search"""

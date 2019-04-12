@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import resolve, reverse
 
 from ..models import Post
-from ..views import PageView
+from ..views import PageListView
 
 
 class PageTests(TestCase):
@@ -18,9 +18,9 @@ class PageTests(TestCase):
         self.assertEqual(self.page_response.status_code, 200)
 
     def test_page_url_resolves_page_view(self):
-        """Tests resolving PageView"""
+        """Tests resolving PageListView"""
         view = resolve('/page/1/')
-        self.assertEqual(view.func.view_class, PageView)
+        self.assertEqual(view.func.view_class, PageListView)
 
     def test_page_contains_links_to_posts(self):
         """Tests the page contains the links to the posts"""

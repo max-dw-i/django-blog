@@ -4,7 +4,7 @@ from django.urls import resolve, reverse
 
 from ..forms import SearchForm
 from ..models import Post
-from ..views import SearchView
+from ..views import SearchFormView
 
 
 class SearchPageTests(TestCase):
@@ -17,9 +17,9 @@ class SearchPageTests(TestCase):
         self.assertEqual(self.search_response.status_code, 200)
 
     def test_url_resolves_search_view(self):
-        """Tests resolving SearchView"""
+        """Tests resolving SearchFormView"""
         view = resolve('/search/')
-        self.assertEqual(view.func.view_class, SearchView)
+        self.assertEqual(view.func.view_class, SearchFormView)
 
 
 class SearchFormTests(TestCase):

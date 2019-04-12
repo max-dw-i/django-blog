@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import resolve, reverse
 
 from ..forms import SendEmailForm
-from ..views import ContactView
+from ..views import ContactFormView
 
 
 class ContactPageTests(TestCase):
@@ -14,9 +14,9 @@ class ContactPageTests(TestCase):
         self.assertEquals(contact_response.status_code, 200)
 
     def test_contact_url_resolves_contact_view(self):
-        """Tests resolving ContactView"""
+        """Tests resolving ContactFormView"""
         view = resolve('/contact/')
-        self.assertEquals(view.func.view_class, ContactView)
+        self.assertEquals(view.func.view_class, ContactFormView)
 
 
 class SendEmailFormTests(TestCase):

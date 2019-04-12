@@ -5,20 +5,20 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('page/<int:page>/', views.PageView.as_view(), name='page'),
+    path('page/<int:page>/', views.PageListView.as_view(), name='page'),
     path('post/<int:pk>/', views.PostNCommentView.as_view(), name='post'),
     path(
         'search/',
         include([
-            path('', views.SearchView.as_view(), name='search'),
+            path('', views.SearchFormView.as_view(), name='search'),
             path(
                 '<slug:search_q>/<int:page>/',
-                views.SearchResultView.as_view(),
+                views.SearchResultListView.as_view(),
                 name='search_result'
             ),
         ])
     ),
-    path('contact/', views.ContactView.as_view(), name='contact'),
+    path('contact/', views.ContactFormView.as_view(), name='contact'),
     path('contact/sent/', views.EmailSentView.as_view(), name='emailsent'),
     path('about/', views.AboutView.as_view(), name='about'),
 ]

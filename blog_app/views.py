@@ -2,7 +2,6 @@ from functools import reduce
 
 from django.core.mail import send_mail
 from django.db.models import Q
-from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, ListView
@@ -20,7 +19,7 @@ class RecentPostsContextMixin(ContextMixin):
         return context
 
 
-class PageView(RecentPostsContextMixin, ListView):
+class PageListView(RecentPostsContextMixin, ListView):
     """View for making main page with the posts list"""
     template_name = 'blog_app/page.html'
     context_object_name = 'posts'
@@ -56,7 +55,7 @@ class PostNCommentView(RecentPostsContextMixin, CreateView):
         return context
 
 
-class ContactView(RecentPostsContextMixin, FormView):
+class ContactFormView(RecentPostsContextMixin, FormView):
     """View for making a contact page and send email to the
     author's blog
     """
@@ -75,7 +74,7 @@ class ContactView(RecentPostsContextMixin, FormView):
         return super().form_valid(form)
 
 
-class SearchView(RecentPostsContextMixin, FormView):
+class SearchFormView(RecentPostsContextMixin, FormView):
     """View for searching posts in the blog"""
     template_name = 'blog_app/search.html'
     form_class = SearchForm
@@ -93,7 +92,7 @@ class SearchView(RecentPostsContextMixin, FormView):
         return super().form_valid(form)
 
 
-class SearchResultView(RecentPostsContextMixin, ListView):
+class SearchResultListView(RecentPostsContextMixin, ListView):
     """View for the search results"""
     template_name = 'blog_app/page.html'
     context_object_name = 'posts'
