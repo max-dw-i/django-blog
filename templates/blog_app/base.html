@@ -51,7 +51,7 @@
                     <ul>
                         {% for post in recent_posts %}
                         <li>
-                            <a href="{% url 'post' post.pk %}">{{ post.title }}</a>
+                            <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
                             <div class="publ_date">
                                 {{ post.publ_date|naturaltime }}
                             </div>

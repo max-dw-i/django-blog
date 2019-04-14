@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
 from django.utils.text import Truncator
 
 
@@ -9,6 +10,9 @@ class Post(models.Model):
     publ_date = models.DateTimeField(auto_now_add=True)
     post_text = models.TextField()
     before_spoiler = models.TextField(default='The post do not have a brief description.')
+
+    def get_absolute_url(self):
+        return reverse('post', kwargs={'pk': self.pk})
 
     def __str__(self):
         return self.title
