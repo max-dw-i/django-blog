@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block center %}
+<div id="left">
+    <div id="left-nav">
+        <a href="{% url 'search' %}"><p><strong>Search</strong></p></a>
+        <p>Recently added publications:</p>
+        <ul>
+            {% for post in recent_posts %}
+            <li>
+                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                <div class="publ_date">
+                    {{ post.publ_date|naturaltime }}
+                </div>
+            </li>
+            {% empty %}
+            <p>
+                <strong>There is no publication</strong>
+            </p>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="author">
+        <div id="author-photo"></div>
+        <!--
+        <img src="{% static 'blog_app/images/avatar.jpg' %}">
+        -->
+        <div id="author-refs">
+            <a href="{% url 'contact' %}"><p><strong>Contact</strong></p></a>
+            <a href="{% url 'about' %}"><p><strong>About</strong></p></a>
+        </div>
+        <div id="author_info">
+            <p>Anonymous and Django's LOVER!!! <3</p>
+        </div>
+    </div>
+</div>
+<div id="content">
+    {% block content %}{% endblock content %}
+</div>
+{% endblock center %}

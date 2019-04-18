@@ -1,21 +1,23 @@
-{% extends 'accounts/base.html' %}
+{% extends 'base.html' %}
 
-{% block content %}
-<h1>
-    {% block title %}
-    {% endblock title %}
-</h1>
-<form method="post">
-    {% block help_text %}{% endblock help_text %}
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn">
-        {% block button_name %}
-        {% endblock button_name %}
-    </button>
-    <div id="pwd-reset">
-        {% block pwdreset %}
-        {% endblock pwdreset %}
-    </div>
-</form>
-{% endblock content %}
+{% block center %}
+<div class="acc_forms">
+    <h1>
+        {% block title %}
+        {% endblock title %}
+    </h1>
+    <form method="post">
+        {% block help_text %}{% endblock help_text %}
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">
+            {% block button_name %}
+            {% endblock button_name %}
+        </button>
+        <div id="pwd-reset">
+            {% block pwdreset %}
+            {% endblock pwdreset %}
+        </div>
+    </form>
+</div>
+{% endblock center %}
