@@ -1,10 +1,13 @@
 from functools import reduce
 
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.db.models import Q
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, FormView, ListView
+from django.utils.decorators import method_decorator
+from django.views.generic import (CreateView, DetailView, FormView, ListView,
+                                  View)
 from django.views.generic.base import ContextMixin, TemplateView
 
 from .forms import NewCommentForm, SearchForm, SendEmailForm
@@ -27,32 +30,52 @@ class PageListView(RecentPostsContextMixin, ListView):
     paginate_by = 2
 
 
-class PostNCommentView(RecentPostsContextMixin, CreateView):
-    """View for making separate post pages and posting new comments"""
-    template_name = 'blog_app/post.html'
+class CommentCreateView(CreateView):
+    """View for creating new comments"""
+    model = Post
     form_class = NewCommentForm
+    template_name = 'blog_app/post.html'
 
     def get_success_url(self):
-        return reverse_lazy('post', kwargs={'pk': self.kwargs['pk']})
+        return self.post.get_absolute_url()
 
     def form_valid(self, form):
-        post = get_object_or_404(Post, pk=self.kwargs['pk'])
+        self.post = self.get_object()
         comment = form.save(commit=False)
         # post_id and user in our model are foreignkey fields so we must
         # assign to them not primary key values itself but the objects that
         # have this specific primary key
-        comment.post_id = post
+        comment.post_id = self.post
         # Django pass the user with the request
         comment.user = self.request.user
         comment.save()
         return super().form_valid(form)
 
+
+class PostDetailView(RecentPostsContextMixin, DetailView):
+    """View for rendering post pages (including comments under
+    every post) and new comment form
+    """
+    model = Post
+    template_name = 'blog_app/post.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        post = get_object_or_404(Post, pk=self.kwargs['pk'])
-        context['post'] = post
+        post = self.object
         context['comments'] = post.post_comments.all()
+        context['form'] = NewCommentForm()
         return context
+
+
+class PostView(View):
+    def get(self, request, *args, **kwargs):
+        view = PostDetailView.as_view()
+        return view(request, *args, **kwargs)
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        view = CommentCreateView.as_view()
+        return view(request, *args, **kwargs)
 
 
 class ContactFormView(RecentPostsContextMixin, FormView):

@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import resolve, reverse
 from ..forms import NewCommentForm
 from ..models import Comment, Post
-from ..views import PostNCommentView
+from ..views import PostView
 
 
 class PostPageTests(TestCase):
@@ -24,9 +24,9 @@ class PostPageTests(TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_post_url_resolves_correct_view(self):
-        """Tests resolving PostNCommentView"""
+        """Tests resolving PostView"""
         view = resolve('/post/1/')
-        self.assertEqual(view.func.view_class, PostNCommentView)
+        self.assertEqual(view.func.view_class, PostView)
 
 
 class NewCommentBaseDataTests(TestCase):
@@ -106,3 +106,25 @@ class NewCommentInvalidDataTests(NewCommentBaseDataTests):
     def test_new_comment_not_created(self):
         """Tests if the new comment is created"""
         self.assertFalse(Comment.objects.exists())
+
+
+class NewCommentPostWithoutLogin(TestCase):
+    def setUp(self):
+        Post.objects.create(title='Vasyan', post_text='blog', before_spoiler='not a good one')
+        self.post_url = reverse('post', kwargs={'pk': 1})
+        data = {'comment_text': 'Viva La Revolucion'}
+        self.post_response = self.client.post(self.post_url, data)
+
+    def test_new_comment_created(self):
+        """Tests if the new comment is not created"""
+        self.assertFalse(Comment.objects.exists())
+
+    def test_redirect_after_new_comment(self):
+        """Tests the redirection after creation the new comment"""
+        login_url = reverse('login') + '?next={}'.format(self.post_url)
+        self.assertRedirects(self.post_response, login_url)
+
+    def test_post_page_contains_new_comment(self):
+        """Tests if the post page does not contains the new comment"""
+        response = self.client.get(self.post_url)
+        self.assertNotContains(response, 'Viva La Revolucion')
