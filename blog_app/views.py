@@ -22,9 +22,9 @@ class RecentPostsContextMixin(ContextMixin):
         return context
 
 
-class PageListView(RecentPostsContextMixin, ListView):
+class PostListView(RecentPostsContextMixin, ListView):
     """View for making main page with the posts list"""
-    template_name = 'blog_app/page.html'
+    template_name = 'blog_app/post_list.html'
     context_object_name = 'posts'
     queryset = Post.objects.all().order_by('-publ_date')
     paginate_by = 2
@@ -117,7 +117,7 @@ class SearchFormView(RecentPostsContextMixin, FormView):
 
 class SearchResultListView(RecentPostsContextMixin, ListView):
     """View for the search results"""
-    template_name = 'blog_app/page.html'
+    template_name = 'blog_app/post_list.html'
     context_object_name = 'posts'
     paginate_by = 10
 
