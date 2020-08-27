@@ -111,3 +111,6 @@ venv.bak/
 
 # Images
 *.jpg
+
+# VS Code
+/.vscode
